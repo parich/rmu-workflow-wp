@@ -6,17 +6,17 @@ return array(
 		'apiVersion' => 3,
 		'name' => 'create-block/awesome',
 		'version' => '0.1.0',
-		'title' => 'Awesome',
+		'title' => 'RMU Workflow',
 		'category' => 'widgets',
-		'icon' => 'smiley',
-		'description' => 'Example block scaffolded with Create Block tool.',
+		'icon' => 'networking',
+		'description' => 'แสดงรายการ Flowchart จากระบบ RMU Workflow',
 		'example' => array(
 			
 		),
 		'supports' => array(
 			'html' => false
 		),
-		'textdomain' => 'awesome',
+		'textdomain' => 'rmu-workflow',
 		'editorScript' => 'file:./index.js',
 		'editorStyle' => 'file:./index.css',
 		'style' => 'file:./style-index.css',

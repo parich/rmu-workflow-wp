@@ -1,12 +1,257 @@
-/**
- * The following styles get applied both on the front of your site
- * and in the editor.
- *
- * Replace them with your own styles or remove the file completely.
- */
+// RMU Workflow — Frontend styles
+// Neutral palette (เทา/ขาว/ดำ) เข้ากับทุก WordPress theme
 
-.wp-block-create-block-awesome {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
+.rmu-workflow-container {
+	--wf-border: #e2e4e7;
+	--wf-bg: #ffffff;
+	--wf-bg-subtle: #f9fafb;
+	--wf-text: #1a1a1a;
+	--wf-muted: #6b7280;
+	--wf-tag-bg: #f3f4f6;
+	--wf-tag-text: #374151;
+	--wf-hover-bg: #f9fafb;
+	--wf-radius: 8px;
+	--wf-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+
+	font-family: inherit;
+	font-size: 1rem;
+	line-height: 1.5;
+	color: var(--wf-text);
+
+	// ----------------------------------------------------------------
+	// Search
+	// ----------------------------------------------------------------
+	.rmu-workflow-controls {
+		margin-bottom: 0.625rem;
+	}
+
+	.rmu-workflow-search {
+		width: 100%;
+		padding: 0.5rem 0.75rem;
+		border: 1px solid var(--wf-border);
+		border-radius: var(--wf-radius);
+		font-size: 0.9375rem;
+		outline-offset: 2px;
+		transition:
+			border-color 0.15s,
+			box-shadow 0.15s;
+		box-sizing: border-box;
+		background: var(--wf-bg);
+		color: var(--wf-text);
+
+		&:focus {
+			border-color: #9ca3af;
+			box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+			outline: none;
+		}
+	}
+
+	// ----------------------------------------------------------------
+	// Tag pills
+	// ----------------------------------------------------------------
+	.rmu-workflow-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.3rem;
+		margin-bottom: 0.875rem;
+	}
+
+	.rmu-workflow-tag-pill {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.2rem 0.6rem;
+		background: var(--wf-tag-bg);
+		color: var(--wf-tag-text);
+		border: 1px solid var(--wf-border);
+		border-radius: 999px;
+		font-size: 0.8125rem;
+		cursor: pointer;
+		transition:
+			background 0.15s,
+			color 0.15s,
+			border-color 0.15s;
+		white-space: nowrap;
+
+		&:hover {
+			background: #e5e7eb;
+			border-color: #9ca3af;
+		}
+
+		&.is-active {
+			background: #1a1a1a;
+			color: #ffffff;
+			border-color: #1a1a1a;
+		}
+	}
+
+	// ----------------------------------------------------------------
+	// Status
+	// ----------------------------------------------------------------
+	.rmu-workflow-status {
+		padding: 0.25rem 0;
+		color: var(--wf-muted);
+		font-size: 0.875rem;
+	}
+
+	// ----------------------------------------------------------------
+	// Grid — 2 col desktop, 1 col mobile
+	// ----------------------------------------------------------------
+	.rmu-workflow-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.625rem;
+
+		@media (max-width: 600px) {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	.rmu-workflow-empty {
+		grid-column: 1 / -1;
+		padding: 1rem;
+		color: var(--wf-muted);
+		font-size: 0.9375rem;
+		text-align: center;
+	}
+
+	// ----------------------------------------------------------------
+	// Card
+	// ----------------------------------------------------------------
+	.rmu-workflow-item {
+		background: var(--wf-bg);
+		border: 1px solid var(--wf-border);
+		border-radius: var(--wf-radius);
+		box-shadow: var(--wf-shadow);
+		transition:
+			border-color 0.15s,
+			background 0.15s;
+
+		&:hover {
+			border-color: #9ca3af;
+			background: var(--wf-hover-bg);
+		}
+	}
+
+	.rmu-workflow-item-link {
+		display: flex;
+		align-items: center;
+		gap: 0.625rem;
+		padding: 0.625rem 0.75rem;
+		color: inherit;
+		text-decoration: none;
+	}
+
+	// ----------------------------------------------------------------
+	// Thumbnail
+	// ----------------------------------------------------------------
+	.rmu-workflow-thumb {
+		flex-shrink: 0;
+		width: 40px;
+		height: 40px;
+		border-radius: 6px;
+		overflow: hidden;
+		background: var(--wf-bg-subtle);
+		border: 1px solid var(--wf-border);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.rmu-workflow-thumb-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.rmu-workflow-thumb-icon {
+		color: #9ca3af;
+
+		&.is-pdf {
+			color: #e53e3e;
+		}
+	}
+
+	// ----------------------------------------------------------------
+	// Meta
+	// ----------------------------------------------------------------
+	.rmu-workflow-meta {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.rmu-workflow-title {
+		margin: 0 0 0.2rem;
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: var(--wf-text);
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		transition: color 0.15s;
+		line-height: 1.4;
+
+		.rmu-workflow-item:hover & {
+			color: #374151;
+		}
+	}
+
+	.rmu-workflow-footer {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.25rem;
+		margin-top: 0.2rem;
+	}
+
+	.rmu-workflow-dept {
+		font-size: 0.6875rem;
+		color: #ffffff;
+		background: #50555e;
+		padding: 0.1rem 0.4rem;
+		border-radius: 999px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 100%;
+	}
+
+	.rmu-workflow-date {
+		font-size: 0.6875rem;
+		color: var(--wf-muted);
+		white-space: nowrap;
+	}
+
+	.rmu-workflow-tags-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.2rem;
+		margin-top: 0.2rem;
+	}
+
+	.rmu-workflow-tag-badge {
+		font-size: 0.6875rem;
+		color: var(--wf-tag-text);
+		background: var(--wf-tag-bg);
+		border: 1px solid var(--wf-border);
+		padding: 0.1rem 0.35rem;
+		border-radius: 4px;
+	}
+
+	// ----------------------------------------------------------------
+	// External link icon
+	// ----------------------------------------------------------------
+	.rmu-workflow-external {
+		flex-shrink: 0;
+		color: var(--wf-muted);
+		opacity: 0;
+		transition: opacity 0.15s;
+
+		.rmu-workflow-item:hover & {
+			opacity: 1;
+		}
+	}
 }
