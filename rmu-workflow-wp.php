@@ -3,7 +3,7 @@
  * Plugin Name:       RMU Workflow
  * Plugin URI:        https://github.com/parich/rmu-workflow-wp
  * Description:       แสดงรายการ Flowchart จากระบบ RMU Workflow พร้อมค้นหาและกรองด้วย Tag โดยใช้ Shortcode [rmu_workflow].
- * Version:           0.1.0
+ * Version:           0.1.1
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            Parich Suriya
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'RMU_WORKFLOW_VERSION', '0.1.0' );
+define( 'RMU_WORKFLOW_VERSION', '0.1.1' );
 define( 'RMU_WORKFLOW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RMU_WORKFLOW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
