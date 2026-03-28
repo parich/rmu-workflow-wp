@@ -13,14 +13,14 @@ License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 == Description ==
 
 Plugin สำหรับแสดงรายการ Flowchart จากระบบ RMU Workflow โดยดึงข้อมูลจาก API
-แสดงผลเป็น 2-column grid พร้อม Glassmorphism UI รองรับการค้นหาและกรองด้วย Tag
+แสดงผลเป็น 2-column grid พร้อม neutral palette UI รองรับการค้นหาและกรองด้วย Tag
 
 **คุณสมบัติ:**
 
 * แสดงรายการ Flowchart แบบ 2-column grid (1-column บน mobile)
 * ค้นหา Flowchart จาก title และ tag
 * กรองด้วย Tag pills
-* Glassmorphism UI ด้วย neutral gray palette
+* UI ด้วย neutral palette
 * รองรับไฟล์ PDF และ Image พร้อม icon fallback
 * Assets โหลดเฉพาะหน้าที่มี shortcode เท่านั้น
 * ตั้งค่า API URL ได้จาก Admin Settings
