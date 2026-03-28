@@ -1,11 +1,13 @@
 <?php
 /**
  * Plugin Name:       RMU Workflow
+ * Plugin URI:        https://github.com/parich/rmu-workflow-wp
  * Description:       แสดงรายการ Flowchart จากระบบ RMU Workflow พร้อมค้นหาและกรองด้วย Tag โดยใช้ Shortcode [rmu_workflow].
  * Version:           0.1.0
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            Parich Suriya
+ * Author URI:        https://github.com/parich
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       rmu-workflow
@@ -146,6 +148,168 @@ function rmu_workflow_settings_page() {
 		<h2><?php esc_html_e( 'วิธีใช้งาน', 'rmu-workflow' ); ?></h2>
 		<p>ใส่ shortcode ต่อไปนี้ในหน้าหรือโพสต์ที่ต้องการ:</p>
 		<code>[rmu_workflow dept_id="518"]</code>
+		<p>ดูรายการ <code>dept_id</code> ทั้งหมดได้ที่ <a href="https://github.com/parich/rmu-workflow-wp/" target="_blank" rel="noopener noreferrer">https://github.com/parich/rmu-workflow-wp/</a></p>
 	</div>
 	<?php
 }
+
+// ---------------------------------------------------------------------------
+// GitHub Update Checker
+// ---------------------------------------------------------------------------
+class RMU_Workflow_GitHub_Updater {
+
+	private $slug            = 'rmu-workflow-wp';
+	private $plugin_file;
+	private $plugin_basename;
+	private $github_owner    = 'parich';
+	private $github_repo     = 'rmu-workflow-wp';
+	private $current_version;
+	private $github_response;
+	private $cache_key       = 'rmu_workflow_github_update';
+	private $cache_expiry    = 21600; // 6 hours
+
+	public function __construct( $plugin_file ) {
+		$this->plugin_file     = $plugin_file;
+		$this->plugin_basename = plugin_basename( $plugin_file );
+
+		$plugin_data           = get_file_data( $plugin_file, array( 'Version' => 'Version' ) );
+		$this->current_version = $plugin_data['Version'];
+
+		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
+		add_filter( 'plugins_api', array( $this, 'plugin_info' ), 20, 3 );
+		add_filter( 'upgrader_post_install', array( $this, 'after_install' ), 10, 3 );
+	}
+
+	private function get_github_release() {
+		if ( $this->github_response !== null ) {
+			return $this->github_response;
+		}
+
+		$cached = get_transient( $this->cache_key );
+		if ( $cached !== false ) {
+			$this->github_response = $cached;
+			return $cached;
+		}
+
+		$url      = "https://api.github.com/repos/{$this->github_owner}/{$this->github_repo}/releases/latest";
+		$response = wp_remote_get( $url, array(
+			'headers' => array(
+				'Accept'     => 'application/vnd.github.v3+json',
+				'User-Agent' => 'WordPress/' . get_bloginfo( 'version' ),
+			),
+		) );
+
+		if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
+			$this->github_response = false;
+			return false;
+		}
+
+		$body = json_decode( wp_remote_retrieve_body( $response ) );
+		if ( empty( $body ) || ! isset( $body->tag_name ) ) {
+			$this->github_response = false;
+			return false;
+		}
+
+		$this->github_response = $body;
+		set_transient( $this->cache_key, $body, $this->cache_expiry );
+
+		return $body;
+	}
+
+	public function check_update( $transient ) {
+		if ( empty( $transient->checked ) ) {
+			return $transient;
+		}
+
+		$release = $this->get_github_release();
+		if ( ! $release ) {
+			return $transient;
+		}
+
+		$remote_version = ltrim( $release->tag_name, 'v' );
+
+		if ( version_compare( $remote_version, $this->current_version, '>' ) ) {
+			$download_url = $release->zipball_url;
+
+			if ( ! empty( $release->assets ) ) {
+				foreach ( $release->assets as $asset ) {
+					if ( substr( $asset->name, -4 ) === '.zip' ) {
+						$download_url = $asset->browser_download_url;
+						break;
+					}
+				}
+			}
+
+			$transient->response[ $this->plugin_basename ] = (object) array(
+				'slug'        => $this->slug,
+				'plugin'      => $this->plugin_basename,
+				'new_version' => $remote_version,
+				'url'         => $release->html_url,
+				'package'     => $download_url,
+			);
+		}
+
+		return $transient;
+	}
+
+	public function plugin_info( $result, $action, $args ) {
+		if ( $action !== 'plugin_information' || $args->slug !== $this->slug ) {
+			return $result;
+		}
+
+		$release = $this->get_github_release();
+		if ( ! $release ) {
+			return $result;
+		}
+
+		$remote_version = ltrim( $release->tag_name, 'v' );
+		$download_url   = $release->zipball_url;
+
+		if ( ! empty( $release->assets ) ) {
+			foreach ( $release->assets as $asset ) {
+				if ( substr( $asset->name, -4 ) === '.zip' ) {
+					$download_url = $asset->browser_download_url;
+					break;
+				}
+			}
+		}
+
+		return (object) array(
+			'name'          => 'RMU Workflow',
+			'slug'          => $this->slug,
+			'version'       => $remote_version,
+			'author'        => '<a href="https://github.com/parich">Parich Suriya</a>',
+			'homepage'      => "https://github.com/{$this->github_owner}/{$this->github_repo}",
+			'requires'      => '6.7',
+			'requires_php'  => '7.4',
+			'sections'      => array(
+				'description' => 'แสดงรายการ Flowchart จากระบบ RMU Workflow พร้อมค้นหาและกรองด้วย Tag',
+				'changelog'   => nl2br( esc_html( $release->body ?? '' ) ),
+			),
+			'download_link' => $download_url,
+		);
+	}
+
+	public function after_install( $response, $hook_extra, $result ) {
+		if ( ! isset( $hook_extra['plugin'] ) || $hook_extra['plugin'] !== $this->plugin_basename ) {
+			return $result;
+		}
+
+		global $wp_filesystem;
+
+		$install_dir = plugin_dir_path( $this->plugin_file );
+
+		if ( $wp_filesystem->exists( $install_dir ) ) {
+			$wp_filesystem->delete( $install_dir, true );
+		}
+
+		$wp_filesystem->move( $result['destination'], $install_dir );
+		$result['destination'] = $install_dir;
+
+		activate_plugin( $this->plugin_basename );
+
+		return $result;
+	}
+}
+
+new RMU_Workflow_GitHub_Updater( __FILE__ );
