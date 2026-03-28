@@ -3,7 +3,7 @@
  * Plugin Name:       RMU Workflow
  * Plugin URI:        https://github.com/parich/rmu-workflow-wp
  * Description:       แสดงรายการ Flowchart จากระบบ RMU Workflow พร้อมค้นหาและกรองด้วย Tag โดยใช้ Shortcode [rmu_workflow].
- * Version:           0.1.1
+ * Version:           0.1.2
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            Parich Suriya
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'RMU_WORKFLOW_VERSION', '0.1.1' );
+define( 'RMU_WORKFLOW_VERSION', '0.1.2' );
 define( 'RMU_WORKFLOW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RMU_WORKFLOW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -177,7 +177,6 @@ class RMU_Workflow_GitHub_Updater {
 
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ) );
 		add_filter( 'plugins_api', array( $this, 'plugin_info' ), 20, 3 );
-		add_filter( 'upgrader_post_install', array( $this, 'after_install' ), 10, 3 );
 	}
 
 	private function get_github_release() {
@@ -290,26 +289,6 @@ class RMU_Workflow_GitHub_Updater {
 		);
 	}
 
-	public function after_install( $response, $hook_extra, $result ) {
-		if ( ! isset( $hook_extra['plugin'] ) || $hook_extra['plugin'] !== $this->plugin_basename ) {
-			return $result;
-		}
-
-		global $wp_filesystem;
-
-		$install_dir = plugin_dir_path( $this->plugin_file );
-
-		if ( $wp_filesystem->exists( $install_dir ) ) {
-			$wp_filesystem->delete( $install_dir, true );
-		}
-
-		$wp_filesystem->move( $result['destination'], $install_dir );
-		$result['destination'] = $install_dir;
-
-		activate_plugin( $this->plugin_basename );
-
-		return $result;
-	}
 }
 
 new RMU_Workflow_GitHub_Updater( __FILE__ );
