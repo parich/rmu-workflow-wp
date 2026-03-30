@@ -2,21 +2,21 @@
 // Neutral palette (เทา/ขาว/ดำ) เข้ากับทุก WordPress theme
 
 .rmu-workflow-container {
-	--wf-border:    #e2e4e7;
-	--wf-bg:        #ffffff;
-	--wf-bg-subtle: #f9fafb;
-	--wf-text:      #1a1a1a;
-	--wf-muted:     #6b7280;
-	--wf-tag-bg:    #f3f4f6;
-	--wf-tag-text:  #374151;
-	--wf-hover-bg:  #f9fafb;
-	--wf-radius:    8px;
-	--wf-shadow:    0 1px 2px rgba(0, 0, 0, 0.06);
+	--wf-border: rgba(0, 0, 0, 0.12);
+	--wf-bg: transparent;
+	--wf-bg-subtle: rgba(0, 0, 0, 0.03);
+	--wf-text: inherit;
+	--wf-muted: rgba(0, 0, 0, 0.45);
+	--wf-tag-bg: rgba(0, 0, 0, 0.05);
+	--wf-tag-text: inherit;
+	--wf-hover-bg: rgba(0, 0, 0, 0.03);
+	--wf-radius: 8px;
+	--wf-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
 
 	font-family: inherit;
-	font-size:   1rem;
+	font-size: 1rem;
 	line-height: 1.5;
-	color:       var(--wf-text);
+	color: inherit;
 
 	// ----------------------------------------------------------------
 	// Search
@@ -26,21 +26,23 @@
 	}
 
 	.rmu-workflow-search {
-		width:          100%;
-		padding:        0.5rem 0.75rem;
-		border:         1px solid var(--wf-border);
-		border-radius:  var(--wf-radius);
-		font-size:      0.9375rem;
+		width: 100%;
+		padding: 0.5rem 0.75rem;
+		border: 1px solid var(--wf-border);
+		border-radius: var(--wf-radius);
+		font-size: 0.9375rem;
 		outline-offset: 2px;
-		transition:     border-color 0.15s, box-shadow 0.15s;
-		box-sizing:     border-box;
-		background:     var(--wf-bg);
-		color:          var(--wf-text);
+		transition:
+			border-color 0.15s,
+			box-shadow 0.15s;
+		box-sizing: border-box;
+		background: var(--wf-bg);
+		color: var(--wf-text);
 
 		&:focus {
-			border-color: #9ca3af;
-			box-shadow:   0 0 0 3px rgba(0, 0, 0, 0.08);
-			outline:      none;
+			border-color: rgba(0, 0, 0, 0.35);
+			box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+			outline: none;
 		}
 	}
 
@@ -48,34 +50,37 @@
 	// Tag pills
 	// ----------------------------------------------------------------
 	.rmu-workflow-tags {
-		display:       flex;
-		flex-wrap:     wrap;
-		gap:           0.3rem;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.3rem;
 		margin-bottom: 0.875rem;
 	}
 
 	.rmu-workflow-tag-pill {
-		display:       inline-flex;
-		align-items:   center;
-		padding:       0.2rem 0.6rem;
-		background:    var(--wf-tag-bg);
-		color:         var(--wf-tag-text);
-		border:        1px solid var(--wf-border);
+		display: inline-flex;
+		align-items: center;
+		padding: 0.2rem 0.6rem;
+		background: var(--wf-tag-bg);
+		color: var(--wf-tag-text);
+		border: 1px solid var(--wf-border);
 		border-radius: 999px;
-		font-size:     0.8125rem;
-		cursor:        pointer;
-		transition:    background 0.15s, color 0.15s, border-color 0.15s;
-		white-space:   nowrap;
+		font-size: 0.8125rem;
+		cursor: pointer;
+		transition:
+			background 0.15s,
+			color 0.15s,
+			border-color 0.15s;
+		white-space: nowrap;
 
 		&:hover {
-			background:   #e5e7eb;
-			border-color: #9ca3af;
+			background: rgba(0, 0, 0, 0.08);
+			border-color: rgba(0, 0, 0, 0.25);
 		}
 
 		&.is-active {
-			background:   #1a1a1a;
-			color:        #ffffff;
-			border-color: #1a1a1a;
+			background: rgba(0, 0, 0, 0.75);
+			color: #ffffff;
+			border-color: transparent;
 		}
 	}
 
@@ -83,8 +88,8 @@
 	// Status
 	// ----------------------------------------------------------------
 	.rmu-workflow-status {
-		padding:   0.25rem 0;
-		color:     var(--wf-muted);
+		padding: 0.25rem 0;
+		color: var(--wf-muted);
 		font-size: 0.875rem;
 	}
 
@@ -93,11 +98,11 @@
 	// ----------------------------------------------------------------
 	.rmu-workflow-list {
 		list-style: none;
-		margin:     0;
-		padding:    0;
-		display:    grid;
+		margin: 0;
+		padding: 0;
+		display: grid;
 		grid-template-columns: repeat(2, 1fr);
-		gap:        0.625rem;
+		gap: 0.625rem;
 
 		@media (max-width: 600px) {
 			grid-template-columns: 1fr;
@@ -106,130 +111,165 @@
 
 	.rmu-workflow-empty {
 		grid-column: 1 / -1;
-		padding:     1rem;
-		color:       var(--wf-muted);
-		font-size:   0.9375rem;
-		text-align:  center;
+		padding: 1rem;
+		color: var(--wf-muted);
+		font-size: 0.9375rem;
+		text-align: center;
 	}
 
 	// ----------------------------------------------------------------
 	// Card
 	// ----------------------------------------------------------------
 	.rmu-workflow-item {
-		background:    var(--wf-bg);
-		border:        1px solid var(--wf-border);
+		background: var(--wf-bg);
+		border: 1px solid var(--wf-border);
 		border-radius: var(--wf-radius);
-		box-shadow:    var(--wf-shadow);
-		transition:    border-color 0.15s, background 0.15s;
+		box-shadow: var(--wf-shadow);
+		overflow: hidden;
+		transition:
+			border-color 0.15s,
+			background 0.15s,
+			box-shadow 0.15s,
+			transform 0.15s;
 
 		&:hover {
-			border-color: #9ca3af;
-			background:   var(--wf-hover-bg);
+			border-color: rgba(0, 0, 0, 0.25);
+			background: var(--wf-hover-bg);
+			box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+			transform: translateY(-1px);
 		}
 	}
 
 	.rmu-workflow-item-link {
-		display:         flex;
-		align-items:     center;
-		gap:             0.625rem;
-		padding:         0.625rem 0.75rem;
-		color:           inherit;
+		display: flex;
+		align-items: flex-start;
+		gap: 0.875rem;
+		padding: 0.875rem 1rem;
+		color: inherit;
 		text-decoration: none;
+		font: inherit;
+		height: 100%;
+		box-sizing: border-box;
+
+		&:focus-visible {
+			outline: 2px solid currentColor;
+			outline-offset: -2px;
+		}
 	}
 
 	// ----------------------------------------------------------------
 	// Thumbnail
 	// ----------------------------------------------------------------
 	.rmu-workflow-thumb {
-		flex-shrink:     0;
-		width:           40px;
-		height:          40px;
-		border-radius:   6px;
-		overflow:        hidden;
-		background:      var(--wf-bg-subtle);
-		border:          1px solid var(--wf-border);
-		display:         flex;
-		align-items:     center;
+		flex-shrink: 0;
+		width: 52px;
+		height: 52px;
+		border-radius: 12px;
+		overflow: hidden;
+		background: var(--wf-bg-subtle);
+		border: 1px solid var(--wf-border);
+		display: flex;
+		align-items: center;
 		justify-content: center;
 	}
 
 	.rmu-workflow-thumb-img {
-		width:      100%;
-		height:     100%;
+		width: 100%;
+		height: 100%;
 		object-fit: cover;
 	}
 
 	.rmu-workflow-thumb-icon {
-		color: #9ca3af;
+		color: rgba(0, 0, 0, 0.3);
 
-		&.is-pdf { color: #e53e3e; }
+		&.is-pdf {
+			color: #e53e3e;
+		}
 	}
 
 	// ----------------------------------------------------------------
 	// Meta
 	// ----------------------------------------------------------------
 	.rmu-workflow-meta {
-		flex:      1;
+		flex: 1;
 		min-width: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.45rem;
 	}
 
 	.rmu-workflow-title {
-		margin:             0 0 0.2rem;
-		font-size:          0.875rem;
-		font-weight:        600;
-		color:              var(--wf-text);
-		overflow:           hidden;
-		display:            -webkit-box;
-		-webkit-line-clamp: 2;
+		font: inherit;
+		font-family: inherit !important;
+		margin: 0;
+		font-size: 1rem;
+		font-weight: 600;
+		font-synthesis: none;
+		color: inherit;
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
 		-webkit-box-orient: vertical;
-		transition:         color 0.15s;
-		line-height:        1.4;
+		transition: color 0.15s;
+		line-height: 1.45;
 
 		.rmu-workflow-item:hover & {
-			color: #374151;
+			opacity: 0.9;
 		}
 	}
 
 	.rmu-workflow-footer {
-		display:     flex;
-		flex-wrap:   wrap;
-		align-items: center;
-		gap:         0.25rem;
-		margin-top:  0.2rem;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-start;
+		gap: 0.4rem 0.55rem;
+	}
+
+	.rmu-workflow-tag-pill,
+	.rmu-workflow-dept,
+	.rmu-workflow-tag-badge {
+		font: inherit;
+		font-size: 0.8125rem;
+		line-height: 1.3;
+		letter-spacing: normal;
+		text-transform: none;
 	}
 
 	.rmu-workflow-dept {
-		font-size:     0.6875rem;
-		color:         #ffffff;
-		background:    #374151;
-		padding:       0.1rem 0.4rem;
+		display: inline-flex;
+		align-items: center;
+		color: inherit;
+		background: var(--wf-bg-subtle);
+		border: 1px solid var(--wf-border);
+		padding: 0.2rem 0.55rem;
 		border-radius: 999px;
-		white-space:   nowrap;
-		overflow:      hidden;
-		text-overflow: ellipsis;
-		max-width:     100%;
+		white-space: normal;
+		overflow-wrap: anywhere;
+		max-width: 100%;
 	}
 
 	.rmu-workflow-date {
-		font-size:   0.6875rem;
-		color:       var(--wf-muted);
+		display: inline-flex;
+		align-items: center;
+		font-size: 0.75rem;
+		color: var(--wf-muted);
 		white-space: nowrap;
 	}
 
 	.rmu-workflow-tags-row {
-		display:    flex;
-		flex-wrap:  wrap;
-		gap:        0.2rem;
-		margin-top: 0.2rem;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
 	}
 
 	.rmu-workflow-tag-badge {
-		font-size:     0.6875rem;
-		color:         var(--wf-tag-text);
-		background:    var(--wf-tag-bg);
-		border:        1px solid var(--wf-border);
-		padding:       0.1rem 0.35rem;
-		border-radius: 4px;
+		display: inline-flex;
+		align-items: center;
+		color: var(--wf-tag-text);
+		background: var(--wf-tag-bg);
+		border: 1px solid var(--wf-border);
+		padding: 0.18rem 0.5rem;
+		border-radius: 999px;
 	}
 
 	// ----------------------------------------------------------------
@@ -237,12 +277,32 @@
 	// ----------------------------------------------------------------
 	.rmu-workflow-external {
 		flex-shrink: 0;
-		color:       var(--wf-muted);
-		opacity:     0;
-		transition:  opacity 0.15s;
+		color: var(--wf-muted);
+		align-self: center;
+		opacity: 0.55;
+		transition:
+			opacity 0.15s,
+			transform 0.15s;
 
 		.rmu-workflow-item:hover & {
 			opacity: 1;
+			transform: translateX(2px);
+		}
+	}
+
+	@media (max-width: 600px) {
+		.rmu-workflow-item-link {
+			gap: 0.75rem;
+			padding: 0.8rem 0.875rem;
+		}
+
+		.rmu-workflow-thumb {
+			width: 46px;
+			height: 46px;
+		}
+
+		.rmu-workflow-title {
+			font-size: 0.9375rem;
 		}
 	}
 }

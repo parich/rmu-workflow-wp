@@ -65,21 +65,24 @@
 			: '#';
 		const date     = formatThaiDate( item.publishedAt );
 		const dept     = item.departmentName
-			? `<span class="rmu-workflow-dept">${ escHtml( item.departmentName ) }</span>`
+			? `<span class="rmu-workflow-dept" title="${ escHtml( item.departmentName ) }">${ escHtml( item.departmentName ) }</span>`
 			: '';
 		const tagsHtml = ( item.tags || [] ).slice( 0, 3 )
 			.map( ( t ) => `<span class="rmu-workflow-tag-badge">#${ escHtml( t ) }</span>` )
 			.join( '' );
+		const metaHtml = ( dept || date )
+			? `<div class="rmu-workflow-footer">
+				${ dept }
+				${ date ? `<span class="rmu-workflow-date">${ escHtml( date ) }</span>` : '' }
+			</div>`
+			: '';
 
 		return `<li class="rmu-workflow-item">
 			<a class="rmu-workflow-item-link" href="${ escHtml( href ) }" target="_blank" rel="noopener noreferrer">
 				<div class="rmu-workflow-thumb">${ buildThumbnail( item ) }</div>
 				<div class="rmu-workflow-meta">
+					${ metaHtml }
 					<p class="rmu-workflow-title">${ escHtml( item.title ) }</p>
-					<div class="rmu-workflow-footer">
-						${ dept }
-						${ date ? `<span class="rmu-workflow-date">${ escHtml( date ) }</span>` : '' }
-					</div>
 					${ tagsHtml ? `<div class="rmu-workflow-tags-row">${ tagsHtml }</div>` : '' }
 				</div>
 				<span class="rmu-workflow-external" aria-hidden="true">
