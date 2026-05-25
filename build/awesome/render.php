@@ -27,4 +27,5 @@ if ( ! $dept_id ) {
 	<div class="rmu-workflow-status" aria-live="assertive" style="display:none"></div>
 
 	<ul class="rmu-workflow-list" role="list"></ul>
+	<div class="rmu-workflow-pager" aria-label="การแบ่งหน้า"></div>
 </div>

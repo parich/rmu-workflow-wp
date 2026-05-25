@@ -273,6 +273,54 @@
 	}
 
 	// ----------------------------------------------------------------
+	// Pagination
+	// ----------------------------------------------------------------
+	.rmu-workflow-pager {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.3rem;
+		margin-top: 1rem;
+	}
+
+	.rmu-pager-btn,
+	.rmu-pager-num {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 32px;
+		height: 32px;
+		padding: 0 0.5rem;
+		border: 1px solid var(--wf-border);
+		border-radius: var(--wf-radius);
+		background: var(--wf-bg);
+		color: inherit;
+		font: inherit;
+		font-size: 0.875rem;
+		cursor: pointer;
+		transition:
+			background 0.15s,
+			border-color 0.15s;
+
+		&:hover:not([disabled]):not(.is-active) {
+			background: var(--wf-hover-bg);
+			border-color: rgba(0, 0, 0, 0.25);
+		}
+
+		&[disabled] {
+			opacity: 0.3;
+			cursor: default;
+		}
+
+		&.is-active {
+			background: rgba(0, 0, 0, 0.75);
+			color: #fff;
+			border-color: transparent;
+			cursor: default;
+		}
+	}
+
+	// ----------------------------------------------------------------
 	// External link icon
 	// ----------------------------------------------------------------
 	.rmu-workflow-external {

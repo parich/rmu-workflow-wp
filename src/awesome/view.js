@@ -6,9 +6,10 @@
 ( function () {
 	'use strict';
 
-	const settings = window.rmuWorkflowSettings || {};
-	const API_URL  = ( settings.apiUrl  || 'https://workflow.rmu.ac.th/api/embed/flowcharts' ).replace( /\/$/, '' );
-	const BASE_URL = ( settings.baseUrl || 'https://workflow.rmu.ac.th' ).replace( /\/$/, '' );
+	const settings        = window.rmuWorkflowSettings || {};
+	const API_URL         = ( settings.apiUrl  || 'https://workflow.rmu.ac.th/api/embed/flowcharts' ).replace( /\/$/, '' );
+	const BASE_URL        = ( settings.baseUrl || 'https://workflow.rmu.ac.th' ).replace( /\/$/, '' );
+	const ITEMS_PER_PAGE  = 6;
 
 	// ------------------------------------------------------------------
 	// Helpers
@@ -109,10 +110,13 @@
 			this.activeTag  = null;
 			this.searchTerm = '';
 
+			this.currentPage = 1;
+
 			this.listEl   = el.querySelector( '.rmu-workflow-list' );
 			this.tagsEl   = el.querySelector( '.rmu-workflow-tags' );
 			this.statusEl = el.querySelector( '.rmu-workflow-status' );
 			this.searchEl = el.querySelector( '.rmu-workflow-search' );
+			this.pagerEl  = el.querySelector( '.rmu-workflow-pager' );
 
 			this._bindEvents();
 			this._fetchData();
@@ -123,7 +127,8 @@
 			this.searchEl.addEventListener( 'input', ( e ) => {
 				clearTimeout( timer );
 				timer = setTimeout( () => {
-					this.searchTerm = e.target.value.trim().toLowerCase();
+					this.searchTerm  = e.target.value.trim().toLowerCase();
+					this.currentPage = 1;
 					this._render();
 				}, 250 );
 			} );
@@ -168,7 +173,8 @@
 
 			this.tagsEl.querySelectorAll( '.rmu-workflow-tag-pill' ).forEach( ( btn ) => {
 				btn.addEventListener( 'click', () => {
-					this.activeTag = btn.dataset.tag || null;
+					this.activeTag   = btn.dataset.tag || null;
+					this.currentPage = 1;
 					this.tagsEl.querySelectorAll( '.rmu-workflow-tag-pill' ).forEach( ( b ) => {
 						b.classList.toggle( 'is-active', b === btn );
 					} );
@@ -189,10 +195,57 @@
 		}
 
 		_render() {
-			const filtered = this._getFiltered();
+			const filtered   = this._getFiltered();
+			const totalPages = Math.ceil( filtered.length / ITEMS_PER_PAGE ) || 1;
+
+			if ( this.currentPage > totalPages ) this.currentPage = totalPages;
+
+			const start     = ( this.currentPage - 1 ) * ITEMS_PER_PAGE;
+			const pageItems = filtered.slice( start, start + ITEMS_PER_PAGE );
+
 			this.listEl.innerHTML = filtered.length
-				? filtered.map( renderItem ).join( '' )
+				? pageItems.map( renderItem ).join( '' )
 				: `<li class="rmu-workflow-empty">ไม่พบ flowchart ที่ตรงกับเงื่อนไข</li>`;
+
+			this._renderPagination( totalPages, filtered.length );
+		}
+
+		_renderPagination( totalPages, total ) {
+			if ( ! this.pagerEl ) return;
+
+			if ( totalPages <= 1 ) {
+				this.pagerEl.innerHTML = '';
+				return;
+			}
+
+			const cur   = this.currentPage;
+			let s       = Math.max( 1, cur - 2 );
+			const e     = Math.min( totalPages, s + 4 );
+			if ( e - s < 4 ) s = Math.max( 1, e - 4 );
+
+			const nums = [];
+			for ( let i = s; i <= e; i++ ) nums.push( i );
+
+			const numBtns = nums.map( ( p ) =>
+				`<button type="button" class="rmu-pager-num${ p === cur ? ' is-active' : '' }" data-page="${ p }">${ p }</button>`
+			).join( '' );
+
+			this.pagerEl.innerHTML =
+				`<button type="button" class="rmu-pager-btn" data-page="${ cur - 1 }"${ cur === 1 ? ' disabled' : '' } aria-label="หน้าก่อน">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="15 18 9 12 15 6"/></svg>
+				</button>
+				${ numBtns }
+				<button type="button" class="rmu-pager-btn" data-page="${ cur + 1 }"${ cur === totalPages ? ' disabled' : '' } aria-label="หน้าถัดไป">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="13" height="13"><polyline points="9 18 15 12 9 6"/></svg>
+				</button>`;
+
+			this.pagerEl.querySelectorAll( '[data-page]:not([disabled])' ).forEach( ( btn ) => {
+				btn.addEventListener( 'click', () => {
+					this.currentPage = parseInt( btn.dataset.page, 10 );
+					this._render();
+					this.el.scrollIntoView( { behavior: 'smooth', block: 'start' } );
+				} );
+			} );
 		}
 
 		_setStatus( msg ) {
